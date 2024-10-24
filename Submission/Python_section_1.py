@@ -1,4 +1,5 @@
-Reverse List by N Elements
+
+#Question1:Reverse List by N Elements
 def reverse(arr, n, k):
     i = 0
     
@@ -47,14 +48,45 @@ output2 = group_strings_by_length(input2)
 print(output2)  
 
 #Question 3: Flatten a Nested Dictionary
+def flatten_dict(nested_dict, parent_key='', sep='.'):
+    items = []
+    for key, value in nested_dict.items():
+        new_key = f"{parent_key}{sep}{key}" if parent_key else key
+        
+        if isinstance(value, dict):
+            items.extend(flatten_dict(value, new_key, sep=sep).items())
+        elif isinstance(value, list):
+            for index, item in enumerate(value):
+                if isinstance(item, dict):
+                    items.extend(flatten_dict(item, f"{new_key}[{index}]", sep=sep).items())
+                else:
+                    items.append((f"{new_key}[{index}]", item))
+        else:
+            items.append((new_key, value))
+    
+    return dict(items)
+
+nested_dict = {
+    "road": {
+        "name": "Highway 1",
+        "length": 350,
+        "sections": [
+            {
+                "id": 1,
+                "condition": {
+                    "pavement": "good",
+                    "traffic": "moderate"
+                }
+            }
+        ]
+    }
+}
+
+flattened_dict = flatten_dict(nested_dict)
+print(flattened_dict)
 
 
-
-
-
-
-
-Question4:Generate Unique Permutations
+#Question4:Generate Unique Permutations
 def permute_unique(nums):
     def backtrack(start):
         if start == len(nums):
@@ -104,9 +136,9 @@ import polyline
 import pandas as pd
 import numpy as np
 
-# Haversine formula to calculate distance between two points on the Earth
+
 def haversine(lat1, lon1, lat2, lon2):
-    R = 6371000  # Radius of Earth in meters
+    R = 6371000  
     phi1 = np.radians(lat1)
     phi2 = np.radians(lat2)
     delta_phi = np.radians(lat2 - lat1)
@@ -115,17 +147,17 @@ def haversine(lat1, lon1, lat2, lon2):
     a = np.sin(delta_phi / 2)*2 + np.cos(phi1) * np.cos(phi2) * np.sin(delta_lambda / 2)*2
     c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
 
-    return R * c  # Distance in meters
+    return R * c  
 
 def decode_polyline_to_dataframe(polyline_str):
-    # Step 1: Decode the polyline
+    
     decoded_coords = polyline.decode(polyline_str)
     
-    # Step 2: Create a DataFrame
+    
     df = pd.DataFrame(decoded_coords, columns=['latitude', 'longitude'])
     
-    # Step 3: Calculate distances
-    distances = [0]  # Initialize with 0 for the first point
+   
+    distances = [0]  
     for i in range(1, len(df)):
         lat1, lon1 = df.iloc[i - 1]
         lat2, lon2 = df.iloc[i]
@@ -135,8 +167,8 @@ def decode_polyline_to_dataframe(polyline_str):
     df['distance'] = distances
     return df
 
-# Example usage
-polyline_str = "your_polyline_here"  # Replace with your actual polyline string
+
+polyline_str = "your_polyline_here"  
 df = decode_polyline_to_dataframe(polyline_str)
 print(df)
 
@@ -155,13 +187,13 @@ def rotate_and_transform_matrix(matrix):
         for j in range(n):
             row_sum = sum(rotated_matrix[i])
             col_sum = sum(rotated_matrix[k][j] for k in range(n))
-            final_matrix[i][j] = row_sum + col_sum - rotated_matrix[i][j]  # Exclude the element itself
+            final_matrix[i][j] = row_sum + col_sum - rotated_matrix[i][j]  
 
     return final_matrix
 
 matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
 result = rotate_and_transform_matrix(matrix)
-print(result)  # Output: [[22, 19, 16], [23, 20, 17], [24, 21, 18]]
+print(result)  
 
 #Question 8: Time Check
 import pandas as pd
@@ -193,5 +225,3 @@ def check_timestamp_completeness(df: pd.DataFrame) -> pd.Series:
    
     boolean_series = pd.Series(dict(results))
     return boolean_series
-
-
